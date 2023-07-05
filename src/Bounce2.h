@@ -2,6 +2,7 @@
   The MIT License (MIT)
 
   Copyright (c) 2013 thomasfredericks
+  Copyright (c) 2023 小島 伊織 / Iori Kojima
 
   Permission is hereby granted, free of charge, to any person obtaining a copy of
   this software and associated documentation files (the "Software"), to deal in
@@ -91,6 +92,9 @@ public:
      
      */
 	void interval(uint16_t interval_millis);
+  public:
+    // Add this function to set interval in microseconds
+    void intervalMicros(uint32_t interval_micros);
 
 	/*!
     @brief   Updates the pin's state. 

@@ -16,6 +16,10 @@ void Debouncer::interval(uint16_t interval_millis)
     this->interval_millis = interval_millis;
 }
 
+void Debouncer::intervalMicros(uint32_t interval_micros) {
+    this->interval_millis = interval_micros / 1000;
+}
+
 void Debouncer::begin() {
 	 state = 0;
     if (readCurrentState()) {
@@ -33,16 +37,21 @@ bool Debouncer::update()
 {
 
     unsetStateFlag(CHANGED_STATE);
+
+    // Add variable for micros
+    uint32_t current_micros = micros();
+
 #ifdef BOUNCE_LOCK_OUT
-    
-    // Ignore everything if we are locked out
-    if (millis() - previous_millis >= interval_millis) {
+
+    // Use micros instead of millis
+    if (current_micros - previous_millis * 1000 >= interval_millis * 1000) {
         bool currentState = readCurrentState();
         if ( currentState != getStateFlag(DEBOUNCED_STATE) ) {
-            previous_millis = millis();
+            previous_millis = current_micros / 1000; // Store in millis
             changeState();
         }
     }
+
     
 
 #elif defined BOUNCE_WITH_PROMPT_DETECTION
